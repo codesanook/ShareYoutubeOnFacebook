@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>share Youtube video on Facebook</title>
+    <script type="text/javascript" src="jquery-2.1.1.js"></script>
+    <script type="text/javascript" src="jquery.blockUI.js"></script>
+    <script type="text/javascript">
+    //config
+    //this page url on real server 
+   var videoUrl = 'http://www.youtube.com/watch?v=4PozamQ05mQ';
+
+    $(document).ready(function() {
+
+
+        $("#btnShare").click(function() {
+            console.log("btnShare clicked");
+
+            FB.ui({
+                method: 'share',
+                    href: videoUrl,
+                }, function(response) {
+
+                if(!response ||response.error_code) {
+
+                    if(response) {
+                        console.log("error_code: " + response.error_code);
+                        console.log("error_message: " + response.error_message);
+                    }
+
+                    alert("Please try to share again");
+
+                }else {
+                    $.unblockUI();
+                }
+              });
+
+        });//end click handler method
+
+
+        //block UI
+       $.blockUI({ message: $('#dialog'), css: { width: '400px' } }); 
+
+    });//end document ready
+    </script>
+</head>
+<body>
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '267442579999564',
+                xfbml: true,
+                version: 'v2.0'
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        } (document, 'script', 'facebook-jssdk'));
+    </script>
+    
+
+    <div id="dialog" style="display: none; cursor: default">
+        <h4> Please support us by sharing this video on your Facebook</h4>
+        <p>
+        <input type="button" id="btnShare" value="Share on Facebook" />
+        </p>
+    </div>
+
+    <iframe style="display:block;margin:100px auto" width="853" height="480" 
+            src="//www.youtube.com/embed/4PozamQ05mQ" 
+            frameborder="0" allowfullscreen>
+    </iframe>
+
+</body>
+</html>
